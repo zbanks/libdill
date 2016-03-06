@@ -283,8 +283,8 @@ finish:
     /* Global error, not related to any particular clause. */
     if(dill_slow(res < 0)) {errno = -res; return -1;}
     /* Success or error for the triggered clause. */
-    errno = cls[res].error;
-    dill_assert(errno == 0 || errno == EPIPE);
+    if(dill_slow(cls[res].error != 0)) {errno = cls[res].error; return -1;}
+
     return res;
 }
 
